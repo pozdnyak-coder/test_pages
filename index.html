@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Михаил — сайты, которые невозможно закрыть</title>
+<meta name="description" content="Персональный сайт Михаила: дизайн, вёрстка, анимации.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============ БАЗА ============ */
+:root{
+  --bg:#06060a;
+  --bg-soft:#0d0d16;
+  --text:#eaeaf5;
+  --muted:#8b8ba7;
+  --violet:#8b5cf6;
+  --cyan:#22d3ee;
+  --pink:#f472b6;
+  --line:rgba(255,255,255,.08);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--violet);color:#fff}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:#08080d}
+::-webkit-scrollbar-thumb{background:linear-gradient(#8b5cf6,#22d3ee);border-radius:99px}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+section[id]{scroll-margin-top:110px}
+
+/* ============ ФОН ============ */
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.bg__grid{
+  position:absolute;inset:-1px;
+  background-image:
+    linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(ellipse 85% 65% at 50% 0%,#000 15%,transparent 75%);
+  mask-image:radial-gradient(ellipse 85% 65% at 50% 0%,#000 15%,transparent 75%);
+}
+.blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.55}
+.blob--1{width:620px;height:620px;background:#7c3aed;top:-220px;left:-160px;animation:drift1 20s ease-in-out infinite alternate}
+.blob--2{width:520px;height:520px;background:#0891b2;top:20%;right:-200px;animation:drift2 24s ease-in-out infinite alternate}
+.blob--3{width:560px;height:560px;background:#be185d;bottom:-260px;left:35%;animation:drift3 28s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(160px,120px) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-140px,180px) scale(1.2)}}
+@keyframes drift3{to{transform:translate(120px,-160px) scale(.9)}}
+
+.cursor-glow{
+  position:fixed;top:0;left:0;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(139,92,246,.16),transparent 65%);
+  pointer-events:none;z-index:0;will-change:transform;
+}
+
+/* ============ КОНТЕЙНЕР ============ */
+.container{width:min(1180px,calc(100% - 40px));margin:0 auto;position:relative;z-index:1}
+
+/* ============ НАВИГАЦИЯ ============ */
+.nav{
+  position:sticky;top:14px;z-index:60;
+  width:min(1180px,calc(100% - 32px));
+  margin:14px auto 0;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:12px 12px 12px 22px;border-radius:999px;
+  background:rgba(13,13,22,.72);
+  border:1px solid var(--line);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+.logo{font-weight:900;font-size:22px;letter-spacing:-.04em;
+  background:linear-gradient(120deg,#fff,var(--violet) 50%,var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.logo span{color:var(--pink);-webkit-text-fill-color:var(--pink)}
+.nav__links{display:flex;gap:30px}
+.nav__links a{position:relative;font-size:14.5px;color:var(--muted);transition:color .3s}
+.nav__links a::after{
+  content:'';position:absolute;left:0;bottom:-6px;height:2px;width:0;
+  background:linear-gradient(90deg,var(--violet),var(--cyan));
+  border-radius:2px;transition:width .35s cubic-bezier(.2,.7,.2,1);
+}
+.nav__links a:hover{color:#fff}
+.nav__links a:hover::after{width:100%}
+
+/* ============ КНОПКИ ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:14px 30px;border-radius:999px;border:none;cursor:pointer;
+  font:inherit;font-weight:700;font-size:15px;color:#fff;
+  background:linear-gradient(120deg,var(--violet),#6d28d9 45%,var(--cyan));
+  background-size:200% 100%;
+  box-shadow:0 10px 34px -10px rgba(139,92,246,.85);
+  transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s,background-position .6s;
+}
+.btn:hover{transform:translateY(-3px);background-position:100% 0;box-shadow:0 18px 44px -12px rgba(34,211,238,.8)}
+.btn:active{transform:translateY(-1px)}
+.btn--ghost{
+  background:rgba(255,255,255,.05);border:1px solid var(--line);
+  box-shadow:none;color:var(--text);backdrop-filter:blur(8px);
+}
+.btn--ghost:hover{background:rgba(255,255,255,.1);border-color:rgba(139,92,246,.6);box-shadow:0 14px 34px -18px rgba(139,92,246,.9)}
+.btn--sm{padding:10px 22px;font-size:14px}
+.btn--big{padding:20px 44px;font-size:18px}
+
+/* ============ ГЕРОЙ ============ */
+.hero{padding:110px 0 70px;text-align:center}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  padding:8px 18px;border-radius:999px;
+  border:1px solid var(--line);background:rgba(255,255,255,.03);
+  margin:0 0 26px;
+}
+.dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.7);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+
+.hero__title{
+  margin:.05em 0 .12em;
+  font-size:clamp(3.4rem,15vw,10rem);
+  line-height:.88;font-weight:900;letter-spacing:-.055em;
+  background:linear-gradient(100deg,#fff 8%,#a78bfa 30%,#22d3ee 50%,#f472b6 70%,#fff 92%);
+  background-size:230% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 7s linear infinite;
+}
+@keyframes shine{to{background-position:230% 0}}
+
+.hero__sub{
+  max-width:640px;margin:0 auto 40px;
+  font-size:clamp(1.02rem,2vw,1.3rem);color:var(--muted);
+}
+.hero__sub em{color:#fff;font-style:normal;position:relative}
+.hero__sub em::after{
+  content:'';position:absolute;left:0;right:0;bottom:2px;height:8px;
+  background:linear-gradient(90deg,rgba(139,92,246,.5),rgba(34,211,238,.5));
+  border-radius:4px;z-index:-1;
+}
+.hero__actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:70px}
+
+.stats{display:flex;justify-content:center;gap:clamp(24px,6vw,80px);flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;gap:2px}
+.stat b{font-size:clamp(1.9rem,4vw,2.7rem);font-weight:900;letter-spacing:-.04em;
+  background:linear-gradient(120deg,#fff,var(--violet));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:13.5px;color:var(--muted);letter-spacing:.02em}
+
+/* ============ БЕГУЩАЯ СТРОКА ============ */
+.marquee{
+  overflow:hidden;padding:24px 0;margin:40px 0;
+  border-block:1px solid var(--line);
+  background:linear-gradient(90deg,rgba(139,92,246,.07),transparent 50%,rgba(34,211,238,.07));
+}
+.marquee__track{display:flex;align-items:center;width:max-content;animation:scroll 30s linear infinite}
+.marquee:hover .marquee__track{animation-play-state:paused}
+.marquee__track span{
+  margin-right:30px;font-size:clamp(1.15rem,3vw,1.9rem);font-weight:900;
+  text-transform:uppercase;letter-spacing:.1em;
+  color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.32);
+}
+.marquee__track i{margin-right:30px;font-style:normal;font-size:11px;color:var(--violet)}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ============ СЕКЦИИ ============ */
+.section{padding:100px 0}
+.h2{
+  font-size:clamp(2rem,5vw,3.2rem);font-weight:900;letter-spacing:-.035em;
+  line-height:1.05;margin:0 0 16px;
+}
+.h2 span{background:linear-gradient(120deg,var(--violet),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.section__sub{color:var(--muted);max-width:560px;margin:0 0 54px;font-size:1.03rem}
+.lead{font-size:1.15rem;color:#c9c9de;max-width:560px;margin:0 0 18px}
+.section p{color:var(--muted);max-width:560px}
+
+/* ============ О СЕБЕ ============ */
+.about{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(30px,5vw,70px);align-items:center}
+.glass{
+  padding:34px;border-radius:26px;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid var(--line);
+  backdrop-filter:blur(12px);
+  box-shadow:0 30px 80px -40px rgba(139,92,246,.7);
+}
+.facts{list-style:none;margin:0;padding:0;display:grid;gap:20px}
+.facts li{display:flex;gap:16px;align-items:flex-start;font-size:15px;color:#c2c2d6}
+.facts .ico{
+  flex:0 0 42px;height:42px;border-radius:13px;display:grid;place-items:center;
+  font-size:19px;background:rgba(139,92,246,.14);border:1px solid rgba(139,92,246,.3);
+}
+.facts b{display:block;color:#fff;font-size:15.5px;margin-bottom:2px}
+
+/* ============ СКИЛЛЫ ============ */
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:26px 46px}
+.skill__top{display:flex;justify-content:space-between;font-size:14.5px;margin-bottom:10px}
+.skill__top span{color:#d3d3e4;font-weight:600}
+.skill__top b{color:var(--muted);font-weight:700}
+.bar{height:9px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
+.bar i{
+  display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--violet),var(--cyan));
+  box-shadow:0 0 18px rgba(34,211,238,.55);
+  transition:width 1.3s cubic-bezier(.2,.75,.2,1);
+}
+.skill.is-in .bar i{width:var(--w)}
+
+/* ============ ПРОЕКТЫ ============ */
+.work{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+.card{
+  position:relative;overflow:hidden;padding:30px;border-radius:24px;
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+  border:1px solid var(--line);
+  transition:transform .45s cubic-bezier(.2,.7,.2,1),border-color .45s,box-shadow .45s;
+}
+.card::before{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .45s;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(139,92,246,.2),transparent 62%);
+}
+.card:hover{transform:translateY(-8px);border-color:rgba(139,92,246,.55);
+  box-shadow:0 30px 70px -30px rgba(139,92,246,.85)}
+.card:hover::before{opacity:1}
+.card__num{
+  display:inline-block;font-size:12px;font-weight:800;letter-spacing:.2em;
+  color:var(--cyan);margin-bottom:16px;
+}
+.card h3{margin:0 0 10px;font-size:1.35rem;font-weight:800;letter-spacing:-.02em;position:relative}
+.card p{margin:0 0 22px;font-size:14.6px;color:var(--muted);position:relative}
+.tags{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.tags span{
+  font-size:12px;font-weight:700;letter-spacing:.03em;padding:6px 13px;border-radius:99px;
+  background:rgba(255,255,255,.05);border:1px solid var(--line);color:#b9b9d0;
+}
+
+/* ============ КОНТАКТ ============ */
+.section--contact{padding-bottom:130px;text-align:center}
+.contact__title{
+  font-size:clamp(2.2rem,6.5vw,4.4rem);font-weight:900;letter-spacing:-.045em;
+  line-height:1.02;margin:0 0 40px;
+}
+.contact__title span{
+  background:linear-gradient(120deg,var(--violet),var(--cyan),var(--pink));
+  background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 6s linear infinite;
+}
+.socials{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:44px}
+.socials a{
+  padding:11px 24px;border-radius:99px;font-size:14px;font-weight:600;color:var(--muted);
+  border:1px solid var(--line);background:rgba(255,255,255,.03);
+  transition:.3s;
+}
+.socials a:hover{color:#fff;border-color:rgba(34,211,238,.6);transform:translateY(-3px);
+  box-shadow:0 14px 30px -16px rgba(34,211,238,.9)}
+
+/* ============ ФУТЕР ============ */
+footer{
+  border-top:1px solid var(--line);padding:34px 0;
+  text-align:center;font-size:13.5px;color:#5d5d78;
+}
+footer b{color:var(--muted)}
+
+/* ============ АНИМАЦИЯ ПОЯВЛЕНИЯ ============ */
+.reveal{opacity:0;transform:translateY(30px);
+  transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal.is-in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+  .bar i{width:var(--w)}
+}
+
+/* ============ АДАПТИВ ============ */
+@media (max-width:900px){
+  .about{grid-template-columns:1fr}
+  .section{padding:76px 0}
+  .hero{padding:80px 0 50px}
+}
+@media (max-width:720px){
+  .nav__links{display:none}
+  .nav{padding:10px 10px 10px 18px}
+  .glass{padding:26px}
+  .card{padding:24px}
+  .marquee{padding:18px 0}
+}
+</style>
+</head>
+<body>
+
+<!-- ФОН -->
+<div class="bg">
+  <div class="bg__grid"></div>
+  <div class="blob blob--1"></div>
+  <div class="blob blob--2"></div>
+  <div class="blob blob--3"></div>
+</div>
+<div class="cursor-glow"></div>
+
+<!-- НАВИГАЦИЯ -->
+<header class="nav">
+  <a class="logo" href="#top">Михаил<span>.</span></a>
+  <nav class="nav__links">
+    <a href="#about">О себе</a>
+    <a href="#skills">Скиллы</a>
+    <a href="#work">Проекты</a>
+    <a href="#contact">Контакты</a>
+  </nav>
+  <a class="btn btn--sm" href="#contact">Написать</a>
+</header>
+
+<!-- ГЕРОЙ -->
+<section class="hero" id="top">
+  <div class="container">
+    <p class="eyebrow"><span class="dot"></span>открыт для новых проектов</p>
+    <h1 class="hero__title">Михаил</h1>
+    <p class="hero__sub">Собираю сайты, которые <em>выглядят дорого</em> и летают на любом устройстве. Дизайн, вёрстка, анимации — под ключ.</p>
+    <div class="hero__actions">
+      <a href="#work" class="btn">Смотреть проекты</a>
+      <a href="#contact" class="btn btn--ghost">Обсудить задачу</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b data-count="7">0</b><span>лет в разработке</span></div>
+      <div class="stat"><b data-count="120" data-suffix="+">0</b><span>проектов сдано</span></div>
+      <div class="stat"><b data-count="98" data-suffix="%">0</b><span>довольных клиентов</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- БЕГУЩАЯ СТРОКА -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>HTML</span><i>◆</i><span>CSS</span><i>◆</i><span>JavaScript</span><i>◆</i><span>Анимации</span><i>◆</i><span>Адаптив</span><i>◆</i><span>UI / UX</span><i>◆</i>
+    <span>HTML</span><i>◆</i><span>CSS</span><i>◆</i><span>JavaScript</span><i>◆</i><span>Анимации</span><i>◆</i><span>Адаптив</span><i>◆</i><span>UI / UX</span><i>◆</i>
+  </div>
+</div>
+
+<!-- О СЕБЕ -->
+<section class="section" id="about">
+  <div class="container about">
+    <div class="reveal">
+      <h2 class="h2">Кто я <span>такой</span></h2>
+      <p class="lead">Меня зовут Михаил. Я делаю интерфейсы, в которых хочется остаться подольше.</p>
+      <p>Начинал с простых лендингов, сейчас собираю полноценные сайты: от идеи и прототипа до финальной анимации кнопки. Люблю чистый код, аккуратные отступы и когда всё работает быстро — без «магии» и лишних библиотек.</p>
+    </div>
+    <div class="glass reveal">
+      <ul class="facts">
+        <li><div class="ico">⚡</div><div><b>Скорость</b>Сайт грузится быстрее, чем клиент успевает моргнуть.</div></li>
+        <li><div class="ico">🎯</div><div><b>Точность</b>Пиксель-перфект вёрстка по макету — без «плюс-минус».</div></li>
+        <li><div class="ico">📱</div><div><b>Адаптив</b>Идеально от 320px до 4K-монитора.</div></li>
+        <li><div class="ico">🧠</div><div><b>Чистый код</b>Понятная структура, которую легко поддерживать.</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- СКИЛЛЫ -->
+<section class="section" id="skills">
+  <div class="container">
+    <h2 class="h2 reveal">Мои <span>скиллы</span></h2>
+    <p class="section__sub reveal">То, чем я пользуюсь каждый день — без «знаю на троечку».</p>
+    <div class="skills">
+      <div class="skill reveal">
+        <div class="skill__top"><span>HTML5 / семантика</span><b>98%</b></div>
+        <div class="bar"><i style="--w:98%"></i></div>
+      </div>
+      <div class="skill reveal">
+        <div class="skill__top"><span>CSS3 / Flexbox / Grid</span><b>96%</b></div>
+        <div class="bar"><i style="--w:96%"></i></div>
+      </div>
+      <div class="skill reveal">
+        <div class="skill__top"><span>Анимации и переходы</span><b>92%</b></div>
+        <div class="bar"><i style="--w:92%"></i></div>
+      </div>
+      <div class="skill reveal">
+        <div class="skill__top"><span>JavaScript</span><b>85%</b></div>
+        <div class="bar"><i style="--w:85%"></i></div>
+      </div>
+      <div class="skill reveal">
+        <div class="skill__top"><span>Адаптивная вёрстка</span><b>95%</b></div>
+        <div class="bar"><i style="--w:95%"></i></div>
+      </div>
+      <div class="skill reveal">
+        <div class="skill__top"><span>Дизайн в Figma</span><b>80%</b></div>
+        <div class="bar"><i style="--w:80%"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ПРОЕКТЫ -->
+<section class="section" id="work">
+  <div class="container">
+    <h2 class="h2 reveal">Последние <span>проекты</span></h2>
+    <p class="section__sub reveal">Немного из того, что я делал руками.</p>
+    <div class="work">
+      <article class="card reveal">
+        <span class="card__num">01</span>
+        <h3>Neon Store</h3>
+        <p>Интернет-магазин с корзиной, фильтрами и плавными переходами между страницами.</p>
+        <div class="tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+      </article>
+      <article class="card reveal">
+        <span class="card__num">02</span>
+        <h3>Portfolio X</h3>
+        <p>Портфолио фотографа: полноэкранные слайды, ленивая загрузка и тёмная тема.</p>
+        <div class="tags"><span>CSS Grid</span><span>Анимации</span></div>
+      </article>
+      <article class="card reveal">
+        <span class="card__num">03</span>
+        <h3>Dash Analytics</h3>
+        <p>Панель аналитики с графиками, адаптивными таблицами и живыми счётчиками.</p>
+        <div class="tags"><span>UI/UX</span><span>JS</span><span>API</span></div>
+      </article>
+      <article class="card reveal">
+        <span class="card__num">04</span>
+        <h3>Landing Pro</h3>
+        <p>Одностраничник для запуска продукта: 100/100 по Lighthouse и конверсия выше на 40%.</p>
+        <div class="tags"><span>Landing</span><span>Оптимизация</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- КОНТАКТЫ -->
+<section class="section section--contact" id="contact">
+  <div class="container reveal">
+    <h2 class="contact__title">Давай сделаем<br><span>что-то крутое</span></h2>
+    <a class="btn btn--big" href="mailto:hello@mikhail.dev">hello@mikhail.dev</a>
+    <div class="socials">
+      <a href="#">Telegram</a>
+      <a href="#">GitHub</a>
+      <a href="#">VK</a>
+      <a href="#">Behance</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © <span id="year">2025</span> <b>Михаил</b> — сделано с нуля на HTML и CSS. Без конструкторов.
+</footer>
+
+<script>
+/* ===== Год в футере ===== */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ===== Появление при скролле ===== */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-in');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i % 3) * 110 + 'ms';
+  io.observe(el);
+});
+
+/* ===== Счётчики ===== */
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    const target = +el.dataset.count;
+    const suffix = el.dataset.suffix || '';
+    const duration = 1500;
+    const start = performance.now();
+
+    function tick(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    counterObserver.unobserve(el);
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('[data-count]').forEach((el) => counterObserver.observe(el));
+
+/* ===== Свечение за курсором ===== */
+const glow = document.querySelector('.cursor-glow');
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  let targetX = innerWidth / 2, targetY = innerHeight / 2;
+  let x = targetX, y = targetY;
+
+  addEventListener('mousemove', (e) => { targetX = e.clientX; targetY = e.clientY; });
+
+  (function loop() {
+    x += (targetX - x) * 0.12;
+    y += (targetY - y) * 0.12;
+    glow.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+    requestAnimationFrame(loop);
+  })();
+} else {
+  glow.style.display = 'none';
+}
+
+/* ===== Подсветка карточек под курсором ===== */
+document.querySelectorAll('.card').forEach((card) => {
+  card.addEventListener('mousemove', (e) => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+});
+</script>
+</body>
+</html>
